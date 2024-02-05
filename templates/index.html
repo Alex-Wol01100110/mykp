@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <link rel="stylesheet" href="static/css/utilities.css">
+    <link rel="stylesheet" href="static/css/style.css">
+    <title>Cyber Analyzer | Top Cybersecurity</title>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <div class="container flex">
+             <h1 class="logo"><a href="/">Cyber Analyzer.</a></h1>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="docs/">API</a></li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+    
+    <!-- Showcase -->
+    <section class="showcase">
+        <div class="container grid">
+            <div class="showcase-text">
+                <h1>Reliable security solutions</h1>
+                <p>Apply the latest developments in artificial intelligence and cybersecurity to your business to improve protection of your clients</p>
+            </div>
+
+            <div class="showcase-form card">
+                <h2>Test URL</h2>
+                 <form action="/" method="POST">
+                    <div class="form-control">
+                        <input type="text" name="url" placeholder="URL" required>
+                    </div>
+                    <input type="submit" value="Test" class="btn btn-primary">
+                </form>
+                {% if checked_url %}
+                    <p id="url-status">{{ checked_url }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Intro -->
+    <section class="intro">
+        <div class="container">
+            <h3 class="intro-heading text-center my-1">
+                Welcome, the latest developments in cybersecurity at your service
+            </h3>
+
+            <div class="grid grid-3 text-center my-4">
+                <div>
+                    <i class="fas fa-shield-alt fa-3x"></i>
+                    <h3>More than 1M analyzed entries</h3>
+                    <p class="text-secondary">Verified data</p>
+                </div>
+                <div>
+                    <i class="fas fa-hammer fa-3x"></i>
+                    <h3>Anything/Anytime</h3>
+                    <p class="text-secondary">Custom solutions</p>
+                </div>
+                <div>
+                    <i class="fas fa-plane fa-3x"></i>
+                    <h3>57 ms per single request</h3>
+                    <p class="text-secondary">Fast</p>
+                </div>
+                <div>
+                    <i class="fas fa-money-check-alt fa-3x"></i>
+                    <h3>--/--</h3>
+                    <p class="text-secondary">Affordable</p>
+                </div>
+                <div>
+                    <i class="fas fa-mountain fa-3x"></i>
+                    <h3>24/7</h3>
+                    <p class="text-secondary">Reliable</p>
+                </div>
+                <div>
+                    <i class="fas fa-mask fa-3x"></i>
+                    <h3>No personal info.</h3>
+                    <p class="text-secondary">Anonymous</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Undermain 1 -->
+    <section class="undermain bg-primary my-2 py-2">
+        <div class="container grid">
+            <div class="text-center">
+                <h2 class="lg">Simple and convenient security solutions</h2>
+                <p class="lead my-1">Analyze any data from any source. Fast, efficient and anonymous</p>
+            </div>
+            <div class="big-icon">
+                <i class="fas fa-check-square fa-8x"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- cards -->
+    <section class="cards">
+        <div class="container grid">
+            <div class="card">
+                <h3>Easy to use, simple forms</h3>
+            </div>
+            <div class="card">
+                <h3>Practical API</h3>
+            </div>
+            <div class="card">
+                <h3>Free statistics and reports</h3>
+            </div>
+            <div class="card">
+                <h3>Free and paid solutions</h3>
+            </div>
+            <div class="card">
+                <h3>Any format</h3>
+            </div>
+            <div class="card">
+                <h3>No data limitation</h3>
+            </div>
+        </div>
+    </section>
+
+    <!-- Undermain 2 -->
+    <section class="undermain bg-primary my-2 py-2">
+        <div class="container grid">
+            <div class="text-center">
+                <h2 class="lg">Statistics and reports </h2>
+                <p class="lead my-1">Detailed analysis and visualization of processed data and reports with advices for system improvements.</p>
+            </div>
+            <div class="big-icon">
+                <i class="fas fa-chart-area fa-8x"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Visualizations -->
+    <section class="cards">
+        <div class="container pies">
+            <div class="visualiztion-item">
+                <canvas id="schemeVis" style="width:100%;max-width:700px"></canvas>
+            </div>
+            <div class="visualiztion-item">
+                <canvas id="generalVis" style="width:100%;max-width:700px"></canvas>
+            </div>
+            <div class="visualiztion-item">
+                <canvas id="domainVis" style="width:100%;max-width:700px"></canvas>
+            </div>
+            <div class="visualiztion-item">
+                <canvas id="topLevelDomainVis" style="width:100%;max-width:700px"></canvas>
+            </div>
+        </div>
+    </section>
+
+    <!-- Undermain 3 -->
+    <section class="undermain bg-primary my-2 py-2">
+        <div class="container grid">
+            <div class="text-center">
+                <h2 class="lg">Vast amount of supported sources.</h2>
+                <p class="lead my-1">All official sources have implemented solutions, for unofficial - custom solution could be created.</p>
+            </div>
+            <div class="big-icon">
+                <i class="fas fa-cogs fa-8x"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sources -->
+    <section class="sources">
+        <h2 class="md text-center my-2">
+            Supported Sources
+        </h2>
+        <div class="container flex">
+            <div class="card">
+                <h4>URLs</h4>
+                <i class="fas fa-search-minus fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>Firewalls</h4>
+                <i class="fas fa-fire fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>Unix</h4>
+                <i class="fas fa-sitemap fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>Windows</h4>
+                <i class="fas fa-border-all fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>CIEM solutions</h4>
+                <i class="fas fa-cloud-meatball fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>WLC</h4>
+                <i class="fas fa-wifi fa-3x"></i>
+            </div>
+            <div class="card">
+                <h4>Others</h4>
+                <i class="fas fa-spinner fa-3x"></i>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer bg-dark py-5">
+        <div class="container grid grid-3">
+            <div>
+                <h1>Cyber Analyzer
+                </h1>
+                <p>Copyright &copy; 2024</p>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="/">Home</a></li>
+                    <li><a href="docs/">API</a></li>
+                </ul>
+            </nav>
+        </div>
+    </footer>
+
+    <div class="backend-values" style="display: none;">
+        <p id="scheme_x">{{ scheme_x }}</p>
+        <p id="scheme_y">{{ scheme_y }}</p>
+        <p id="scheme_title">{{ scheme_title }}</p>
+        <p id="domain_x">{{ domain_x }}</p>
+        <p id="domain_y">{{ domain_y }}</p>
+        <p id="domain_title">{{ domain_title }}</p>
+        <p id="top_level_domain_x">{{ top_level_domain_x }}</p>
+        <p id="top_level_domain_y">{{ top_level_domain_y }}</p>
+        <p id="top_level_domain_title">{{ top_level_domain_title }}</p>
+        <p id="general_x">{{ general_x }}</p>
+        <p id="general_y">{{ general_y }}</p>
+        <p id="general_title">{{ general_title }}</p>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+    <script>
+        function setURLStatus() {
+            var urlStatusElem = document.getElementById('url-status')
+            if (urlStatusElem !== null) {
+                if (urlStatusElem.textContent === "URL is Malicious") {
+                    urlStatusElem.className += "url-malicious"
+                } else {
+                    urlStatusElem.className += "url-safe"
+                }
+            }
+        }
+
+        function strToArray(string) {
+            string = string.textContent.replace(/'/g, '"')
+            string = JSON.parse(string)
+            return string
+        }
+
+        function createVisualization(name, title, labels, data, type) {
+            var barColors = [
+                "#b91d47",
+                "#00aba9",
+                "#2b5797",
+                "#e8c3b9",
+                "#1e7145"
+            ];
+            
+            new Chart(name, {
+                type: type,
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        backgroundColor: barColors,
+                        data: data
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: title
+                    }
+                }
+            });
+        }
+
+        var schemeX = document.getElementById('scheme_x')
+        var schemeY = document.getElementById('scheme_y')
+        var domainX = document.getElementById('domain_x')
+        var domainY = document.getElementById('domain_y')
+        var topLevelDomainX = document.getElementById('top_level_domain_x')
+        var topLevelDomainY = document.getElementById('top_level_domain_y')
+        var generalX = document.getElementById('general_x')
+        var generalY = document.getElementById('general_y')
+        var schemeTitle = document.getElementById('scheme_title')
+        var domainTitle = document.getElementById('domain_title')
+        var topLevelDomainTitle = document.getElementById('top_level_domain_title')
+        var generalTitle = document.getElementById('general_title')
+        schemeTitle = schemeTitle.textContent
+        domainTitle = domainTitle.textContent
+        topLevelDomainTitle = topLevelDomainTitle.textContent
+        generalTitle = generalTitle.textContent
+
+        setURLStatus()
+
+        schemeX = strToArray(schemeX)
+        schemeY = strToArray(schemeY)
+        domainX = strToArray(domainX)
+        domainY = strToArray(domainY)
+        topLevelDomainX = strToArray(topLevelDomainX)
+        topLevelDomainY = strToArray(topLevelDomainY)
+        generalX = strToArray(generalX)
+        generalY = strToArray(generalY)
+
+        createVisualization("schemeVis", schemeTitle, schemeX, schemeY, "pie")
+        createVisualization("domainVis", domainTitle, domainX, domainY, "polarArea")
+        createVisualization("topLevelDomainVis", topLevelDomainTitle, topLevelDomainX, topLevelDomainY, "doughnut")
+        createVisualization("generalVis", generalTitle, generalX, generalY, "pie")
+    </script>
+</body>
+</html>
