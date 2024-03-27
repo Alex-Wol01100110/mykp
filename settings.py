@@ -27,6 +27,9 @@ USER_PASS = os.getenv("USER_PASS")
 SERVICE_HOST = os.getenv("SERVICE_HOST")
 SERVICE_PORT = os.getenv("SERVICE_PORT")
 
+# URL address
+WEBSITE_ADDRESS= os.getenv("WEBSITE_ADDRESS")
+
 logger.add(
     sink=os.path.join("debug_logs", "warning.log"),
     level="WARNING",
