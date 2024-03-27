@@ -19,7 +19,15 @@ from utils.general_utils import ModelUtils
 import settings
 
 
-app = FastAPI()
+app = FastAPI(
+    title="Cyber Analyzer",
+    description="Helps you analyze URLs in real time.",
+    version="0.0.1",
+    contact={
+        "name": "Cyber Analyzer",
+        "url": settings.WEBSITE_ADDRESS
+    }
+)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 security = HTTPBasic()
 templates = Jinja2Templates(directory="templates")
