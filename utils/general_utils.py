@@ -1,19 +1,18 @@
 """Module providing a functions to train and use trained model."""
-import json
 import itertools
+import json
 import os
-import sys
 import re
+import sys
 import typing
 
 import joblib
-from loguru import logger
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDClassifier
-
 import nltk
 import numpy as np
 import pandas as pd
+from loguru import logger
+from sklearn.linear_model import SGDClassifier
+from sklearn.model_selection import train_test_split
 
 import settings
 
@@ -139,6 +138,10 @@ class ModelUtils:
             classifier,
             features_dict
         )
+        if update:
+            print("Model have been updated!")
+        else:
+            print("Model have been trained!")
         print("Correct Predictions ", correct)
         print("Incorrect Predictions ", incorrect)
         accuracy = (correct / test_df.shape[0]) * 100
@@ -418,7 +421,7 @@ class UrlUtils:
         batch: pd.DataFrame,
         x: np.ndarray,
         y: np.ndarray
-    ) -> typing.Tuple:
+    ) -> typing.Tuple[np.ndarray, np.ndarray]:
         """
         Summary:
             Apply vectorization process to current batch.
@@ -457,7 +460,7 @@ class UrlUtils:
         Returns:
             np.ndarray: matrix.
         """
-        x = np.zeros([1, len(features_dict)],dtype="int")
+        x = np.zeros([1, len(features_dict)], dtype="int")
         url = UrlUtils.clean_url(url)
         for gram in NgramUtils.generate_ngrams_from_string(url):
             try:

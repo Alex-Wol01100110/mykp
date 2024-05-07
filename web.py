@@ -1,23 +1,18 @@
 """Web application."""
 import secrets
-
-from typing import List, Dict
+from typing import Dict
 
 import uvicorn
-from pydantic import BaseModel
-
-from fastapi import Depends, FastAPI, HTTPException, status, Request
-from fastapi.security import HTTPBasic, HTTPBasicCredentials
+from fastapi import Depends, FastAPI, Form, HTTPException, Request, status
 from fastapi.responses import HTMLResponse
-from fastapi.templating import Jinja2Templates
+from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.staticfiles import StaticFiles
-from fastapi import Form
-
+from fastapi.templating import Jinja2Templates
 from loguru import logger
+from pydantic import AnyUrl, BaseModel
 
-from utils.general_utils import ModelUtils
 import settings
-
+from utils.general_utils import ModelUtils
 
 app = FastAPI(
     title="Cyber Analyzer",
@@ -38,7 +33,7 @@ class URLConfiguration(BaseModel):
     Summary:
         Set base model of the report configuration.
     """
-    urls: List
+    urls: tuple[AnyUrl, ...]
 
 
 def validate_credentials(
@@ -85,13 +80,13 @@ class URLs(FastAPI):
     async def test_urls(
         urls_obj: URLConfiguration,
         authenticated: str = Depends(validate_credentials)
-    ) -> Dict:
+    ) -> Dict[str, str]:
         """
         Summary:
             Test URLs status - safe or malicious.
 
         Args:
-            urls (ReportConfiguration): configurations of reports.
+            urls (URLConfiguration): provided urls.
             authenticated (str, optional): Bool value,
             that show if authentication is successful.
 
@@ -101,10 +96,11 @@ class URLs(FastAPI):
         statuses = {True: "URL is Malicious", False: "URL is Safe"}
         if authenticated:
             checked_urls = {
-                url: statuses.get(ModelUtils.test_url(url))
+                str(url): statuses.get(ModelUtils.test_url(str(url)))
                 for url in urls_obj.urls
             }
             return checked_urls
+        return {"message": "User is not authenticated"}
 
     @logger.catch
     @app.get("/", response_class=HTMLResponse)
@@ -189,7 +185,7 @@ class URLs(FastAPI):
             response = templates.TemplateResponse(
                 "index.html",
                 {
-                    "request": request, 
+                    "request": request,
                     "checked_url": checked_url,
                     "scheme_x": scheme_x,
                     "scheme_y": scheme_y,
