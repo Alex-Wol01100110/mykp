@@ -94,15 +94,6 @@
                         <h3>Scan id: {{ scan_result.urls[0].virustotal.scan_id | default('N/A') }}</h3>
                         <h3>Total services: {{ scan_result.urls[0].virustotal.total | default('N/A') }}</h3>
                         <h3>URL: {{ scan_result.urls[0].virustotal.url | default('N/A') }}</h3>
-                        <br>
-                        <!-- {% if scan_result.urls[0].virustotal.scans %}
-                            {% for name, value in scan_result.urls[0].virustotal.scans.items() %}
-                                <h3>{{ name | default('N/A') | underscore_to_whitespace }}</h3>
-                                <h4>Detected: {{ value.detected | default('N/A') }}</h4>
-                                <h4>Result: {{ value.result | default('N/A') }}</h4>
-                                <h4>Detail: {{ value.detail | default('N/A') }}</h4>
-                            {% endfor %}
-                        {% endif %} -->
                     </div>
 
                     <!-- ApiBlackListChecker part -->
@@ -116,11 +107,6 @@
                         <h3>IP address: {{ scan_result.urls[0].blacklist_checker.ip_address | default('N/A') }}</h3>
                         <h3>Detections: {{ scan_result.urls[0].blacklist_checker.detections | default('N/A') }}</h3>
                         <h3>Checks remaining: {{ scan_result.urls[0].blacklist_checker.checks_remaining | default('N/A') }}</h3>
-                        <!-- {% for blacklist in scan_result.urls[0].blacklist_checker.blacklists %}
-                            <h4>ID: {{ blacklist.id | default('N/A') | underscore_to_whitespace }}</h4>
-                            <h4>Name: {{ blacklist.name | default('N/A') }}</h4>
-                            <h4>Detected: {{ blacklist.detected | default('N/A') }}</h4>
-                        {% endfor %} -->
                     </div>
                 {% endif %}
             </div>

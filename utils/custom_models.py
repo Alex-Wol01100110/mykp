@@ -21,15 +21,6 @@ class WhoIsModel(BaseModel):
     updated_date: Optional[tuple] = None
 
 
-# class VirusTotalModel(BaseModel):
-#     valid_response: Optional[bool] = None
-#     message: Optional[str] = None
-#     scan_date: Optional[str] = None
-#     total: Optional[int] = None
-#     positives: Optional[int] = None
-#     scans: Optional[dict] = None
-
-
 class VirusTotalModel(BaseModel):
     valid_response: Optional[bool] = False
     message: Optional[str] = None

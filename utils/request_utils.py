@@ -89,60 +89,6 @@ class AsyncRequester:
         except aiohttp.ClientError as e:
             print("Error:", e)
 
-    # async def pefrom_virustotal_request(
-    #     self,
-    #     session: aiohttp.ClientSession,
-    #     url: URLSettings
-    # ):
-    #     params = {
-    #         'apikey': settings.VIRUS_TOTAL_API_KEY, 'resource': str(url.url)
-    #     }
-    #     try:
-    #         async with session.request(
-    #             'GET',
-    #             url=settings.VIRUS_TOTAL_REPORT_URL,
-    #             params=params,
-    #             timeout=5,
-    #         ) as response:
-    #             response_data = await response.json()
-    #             if response_data:
-    #                 if response_data['response_code'] == 1:
-    #                     try:
-    #                         model_data = VirusTotalModel(
-    #                             valid_response=True,
-    #                             message=response_data.get(
-    #                                 "verbose_msg",
-    #                                 "URL found in VirusTotal's database."
-    #                             ),
-    #                             scan_date=response_data.get('scan_date', "N/A"),
-    #                             total=response_data.get('total', 0),
-    #                             positives=response_data.get('positives', 0),
-    #                             scans=response_data.get('scans', {})
-    #                         )
-    #                     except ValidationError as _:
-    #                         model_data = VirusTotalModel(
-    #                             valid_response=False,
-    #                             message=response_data.get(
-    #                                 "verbose_msg",
-    #                                 ("Data types have changed, "
-    #                                  "model need to be updated.")
-    #                             )
-    #                         )
-    #                     url.virustotal = model_data
-    #                 else:
-    #                     model_data = VirusTotalModel(
-    #                         valid_response=True,
-    #                         message=response_data.get(
-    #                             "verbose_msg",
-    #                             "URL not found in VirusTotal's database."
-    #                         )
-    #                     )
-    #                     url.virustotal = model_data
-    #             else:
-    #                 print("Failed to make request to VirusTotal API.")
-    #     except aiohttp.ClientError as e:
-    #         print("Error:", e)
-
     async def get_virustotal_scan_id(
         self,
         session: aiohttp.ClientSession,
@@ -373,8 +319,6 @@ class AsyncRequester:
         """
         asyncio.run(self.gather_data(self.get_virustotal_scan_id))
         asyncio.run(self.gather_data(self.get_virustotal_report))
-        # asyncio.run(self.gather_data(self.pefrom_virustotal_request, ssl=True))
-
 
     def blacklist_checker_check(self):
         """
