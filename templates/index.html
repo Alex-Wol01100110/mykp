@@ -35,14 +35,96 @@
                  <form action="/" method="POST">
                     <div class="form-control">
                         <input type="text" name="url" placeholder="URL" required>
+                        <input type="checkbox" name="additional_checks" id="additional_checks">
+                        <label for="additional_checks">Additional checks</label>
                     </div>
                     <input type="submit" value="Test" class="btn btn-primary">
                 </form>
-                {% if checked_url %}
-                    <p id="url-status">{{ checked_url }}</p>
+                {% if error_message %}
+                    <p id="url-error">{{ error_message }}</p>
                 {% endif %}
             </div>
         </div>
+    </section>
+
+    <!-- Scan info -->
+    <section class="scan-info">
+        {% if checked_url %}
+            <div class="scan-info-separator"></div>
+            <button class="scan-info-button" onclick="toggleVisibility('scan-list')">Show scan result</button>
+            <div class="container grid" id="scan-list">
+                <div class="card">
+                    <h2>ML Info</h2>
+                    <h3>URL: {{ provided_url }} </h3><br>
+                    <h3>Result: {{ checked_url }} </h3>
+                </div>
+                {% if scan_result and scan_result.urls[0] %}
+
+                    <!-- General part -->
+                    <div class="card">
+                        <h2>General Info </h2>
+                        <h3>URL: {{ scan_result.urls[0].url | default('N/A') }}</h3>
+                        {% if scan_result.urls[0].status_code != 404 %}
+                            <h3>Website status: Active</h3>
+                        {% else %}
+                            <h3>Website status: Inactive</h3>
+                        {% endif %}
+                        <h3>Scheme: {{ scan_result.urls[0].scheme.value | default('N/A') }}</h3>
+                        <h3>Domain: {{ scan_result.urls[0].domain | default('N/A') }}</h3>
+                        <h3>IP: {{ scan_result.urls[0].ip | default('N/A') }} </h3>
+                        <h3>SSL Certificate: {{ scan_result.urls[0].ssl_certificate | default('N/A') }}</h3>
+                    </div>
+
+                    <!-- Whois part -->
+                    <div class="card">
+                        <h2>WHOIS Info</h2>
+                        <h3>Domain name: {{ scan_result.urls[0].whois_data.domain_name | default('N/A') | any_to_str }}</h3>
+                        <h3>Creation date: {{ scan_result.urls[0].whois_data.creation_date | default('N/A') | any_to_str }}</h3>
+                        <h3>Expiration date: {{ scan_result.urls[0].whois_data.expiration_date | default('N/A') | any_to_str }}</h3>
+                        <h3>Updated date: {{ scan_result.urls[0].whois_data.updated_date | default('N/A') | any_to_str }}</h3>
+                    </div>
+
+                    <!-- VirusTotal part -->
+                    <div class="card">
+                        <h2>VirusTotal Info </h2>
+                        <h3>Message: {{ scan_result.urls[0].virustotal.message | default('N/A') }}</h3>
+                        <h3>Positives: {{ scan_result.urls[0].virustotal.positives | default('N/A') }}</h3>
+                        <h3>Response code: {{ scan_result.urls[0].virustotal.response_code | default('N/A') }}</h3>
+                        <h3>Scan date: {{ scan_result.urls[0].virustotal.scan_date | default('N/A') }}</h3>
+                        <h3>Scan id: {{ scan_result.urls[0].virustotal.scan_id | default('N/A') }}</h3>
+                        <h3>Total services: {{ scan_result.urls[0].virustotal.total | default('N/A') }}</h3>
+                        <h3>URL: {{ scan_result.urls[0].virustotal.url | default('N/A') }}</h3>
+                        <br>
+                        <!-- {% if scan_result.urls[0].virustotal.scans %}
+                            {% for name, value in scan_result.urls[0].virustotal.scans.items() %}
+                                <h3>{{ name | default('N/A') | underscore_to_whitespace }}</h3>
+                                <h4>Detected: {{ value.detected | default('N/A') }}</h4>
+                                <h4>Result: {{ value.result | default('N/A') }}</h4>
+                                <h4>Detail: {{ value.detail | default('N/A') }}</h4>
+                            {% endfor %}
+                        {% endif %} -->
+                    </div>
+
+                    <!-- ApiBlackListChecker part -->
+                    <div class="card">
+                        <h2>Blacklist checker info </h2>
+                        <h3>Message: {{ scan_result.urls[0].blacklist_checker.message | default('N/A') }}</h3>
+                        <h3>Status: {{ scan_result.urls[0].blacklist_checker.status | default('N/A') }}</h3>
+                        <h3>Input: {{ scan_result.urls[0].blacklist_checker.input_raw | default('N/A') }}</h3>
+                        <h3>Input type: {{ scan_result.urls[0].blacklist_checker.input_type | default('N/A') }}</h3>
+                        <h3>Input domain: {{ scan_result.urls[0].blacklist_checker.input_domain | default('N/A') }}</h3>
+                        <h3>IP address: {{ scan_result.urls[0].blacklist_checker.ip_address | default('N/A') }}</h3>
+                        <h3>Detections: {{ scan_result.urls[0].blacklist_checker.detections | default('N/A') }}</h3>
+                        <h3>Checks remaining: {{ scan_result.urls[0].blacklist_checker.checks_remaining | default('N/A') }}</h3>
+                        <!-- {% for blacklist in scan_result.urls[0].blacklist_checker.blacklists %}
+                            <h4>ID: {{ blacklist.id | default('N/A') | underscore_to_whitespace }}</h4>
+                            <h4>Name: {{ blacklist.name | default('N/A') }}</h4>
+                            <h4>Detected: {{ blacklist.detected | default('N/A') }}</h4>
+                        {% endfor %} -->
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </section>
 
     <!-- Intro -->
@@ -235,18 +317,15 @@
         <p id="general_x">{{ general_x }}</p>
         <p id="general_y">{{ general_y }}</p>
         <p id="general_title">{{ general_title }}</p>
+        <p id="scan_result_exist">{{ scan_result_exist }}</p>
     </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     <script>
         function setURLStatus() {
-            var urlStatusElem = document.getElementById('url-status')
+            var urlStatusElem = document.getElementById('url-error')
             if (urlStatusElem !== null) {
-                if (urlStatusElem.textContent === "URL is Malicious") {
-                    urlStatusElem.className += "url-malicious"
-                } else {
-                    urlStatusElem.className += "url-safe"
-                }
+                urlStatusElem.className += "url-invalid"
             }
         }
 
@@ -283,6 +362,23 @@
             });
         }
 
+        function toggleVisibility(id) {
+            var element = document.getElementById(id);
+            element.classList.toggle('hidden');
+            if (element.classList.contains("hidden")) {
+                document.querySelector('.scan-info-button').textContent = 'Show scan result';
+            } else {
+                document.querySelector('.scan-info-button').textContent = 'Hide scan result';
+            }
+        }
+
+        function changeIntroPadding() {
+            var scanResultExist = document.getElementById('scan_result_exist')
+            if (scanResultExist !== null && scanResultExist.textContent === 'True') {
+                document.querySelector('.intro').style.paddingTop = '40px';
+            }
+        }
+
         var schemeX = document.getElementById('scheme_x')
         var schemeY = document.getElementById('scheme_y')
         var domainX = document.getElementById('domain_x')
@@ -301,6 +397,7 @@
         generalTitle = generalTitle.textContent
 
         setURLStatus()
+        changeIntroPadding()
 
         schemeX = strToArray(schemeX)
         schemeY = strToArray(schemeY)
