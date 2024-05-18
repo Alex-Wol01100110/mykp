@@ -39,6 +39,28 @@ class MainCLI:
                  "Example: python cli.py -t"
         )
         self.parser.add_argument(
+            '--loss',
+            choices=[
+                "hinge", "log_loss", "log", "modified_huber", 
+                "squared_hinge", "perceptron", "squared_error", "huber",
+                "epsilon_insensitive", "squared_epsilon_insensitive", "hinge"
+            ],
+            default="hinge",
+            help='Model loss function'
+        )
+        self.parser.add_argument(
+            '--penalty',
+            choices=["l2", "l1", "elasticnet", "l2"],
+            default="l2",
+            help='Model penalty function'
+        )
+        self.parser.add_argument(
+            '--max_iter',
+            type=int,
+            default=1000,
+            help='Model max number of iterations'
+        )
+        self.parser.add_argument(
             "-u",
             "--update",
             default=False,
@@ -73,9 +95,18 @@ class MainCLI:
             get general information.
         """
         if self.args.train:
-            ModelUtils.train_model()
+            ModelUtils.train_model(
+                loss=self.args.loss,
+                penalty=self.args.penalty,
+                max_iter=self.args.max_iter
+            )
         elif self.args.update:
-            ModelUtils.train_model(update=True)
+            ModelUtils.train_model(
+                loss=self.args.loss,
+                penalty=self.args.penalty,
+                max_iter=self.args.max_iter,
+                update=True,
+            )
         elif self.args.link:
             ModelUtils.test_url(self.args.link, console=True)
         elif self.args.check:

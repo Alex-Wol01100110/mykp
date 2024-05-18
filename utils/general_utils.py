@@ -116,7 +116,12 @@ class ModelUtils:
     """
     @staticmethod
     @logger.catch
-    def train_model(update: bool = False):
+    def train_model(
+        loss: str,
+        penalty: str,
+        max_iter: int,
+        update: bool = False,
+    ):
         """
         Summary:
             Full training process.
@@ -128,7 +133,11 @@ class ModelUtils:
         if update:
             classifier = ModelUtils.load_model()
         else:
-            classifier = SGDClassifier()
+            classifier = SGDClassifier(
+                loss=loss,
+                penalty=penalty,
+                max_iter=max_iter
+            )
         train_df, test_df = ModelUtils.split_dataframe()
         features_dict = NgramUtils().get_ngram_combinations()
         ModelUtils.insert_data(train_df, classifier, features_dict)
