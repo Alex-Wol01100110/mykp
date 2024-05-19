@@ -1,5 +1,4 @@
-import re
-import subprocess
+import socket
 from urllib.parse import urlparse
 from pydantic import AnyUrl
 from .custom_models import URLScheme
@@ -33,29 +32,15 @@ def get_url_domain(url: AnyUrl) -> str:
     """
     return urlparse(str(url)).netloc
 
-def get_url_ip(domain: str) -> str:
+def get_domain_ip(domain: str) -> str:
     """
     Summary:
-        Get url ip.
+        Get IP by domain name.
 
     Args:
-        url (str): Url.
+        domain (str): domain name.
 
     Returns:
-        str: Ip.
+        str: IP.
     """
-    with subprocess.Popen(
-        ["ping", '-n', '1', domain],
-        stdout=subprocess.PIPE
-    ) as proc:
-        output = proc.stdout.read()
-    result = output.decode(encoding='utf-8', errors='strict')
-    result = re.sub(r'\n', '', result)
-    result = re.sub(r'\r', '', result)
-    result = re.findall(
-        r'\[(\d+\.\d+\.\d+\.\d+)\]\swith',
-        result
-    )
-    if result:
-        return result[0]
-    return 'N/A'
+    return socket.gethostbyname(domain)

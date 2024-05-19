@@ -2,7 +2,7 @@
 import whois
 from .custom_models import URLsSettings, WhoIsModel
 from .request_utils import AsyncRequester
-from .url_utils import get_url_scheme, get_url_domain, get_url_ip
+from .url_utils import get_url_scheme, get_url_domain, get_domain_ip
 from pydantic import ValidationError
 
 
@@ -58,7 +58,7 @@ def get_website_main_infos(url_models: URLsSettings):
         url.scheme = get_url_scheme(url.url)
         url.domain = get_url_domain(url.url)
         if url.status_code == 200:
-            url.ip = get_url_ip(url.domain)
+            url.ip = get_domain_ip(url.domain)
 
 def perform_services_checks(url_models: URLsSettings) -> URLsSettings:
     async_requester = AsyncRequester(url_models)
