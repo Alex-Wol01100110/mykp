@@ -75,19 +75,18 @@
                         <h3>SSL Certificate: {{ scan_result.urls[0].ssl_certificate | default('N/A') }}</h3>
                     </div>
 
-                    <!-- Whois part -->
-                    <div class="card">
-                        <h2>WHOIS Info</h2>
-                        <h3>Domain name: {{ scan_result.urls[0].whois_data.domain_name | default('N/A') | any_to_str }}</h3>
-                        <h3>Creation date: {{ scan_result.urls[0].whois_data.creation_date | default('N/A') | any_to_str }}</h3>
-                        <h3>Expiration date: {{ scan_result.urls[0].whois_data.expiration_date | default('N/A') | any_to_str }}</h3>
-                        <h3>Updated date: {{ scan_result.urls[0].whois_data.updated_date | default('N/A') | any_to_str }}</h3>
-                    </div>
-
                     <!-- VirusTotal part -->
                     <div class="card">
                         <h2>VirusTotal Info </h2>
                         <h3>Message: {{ scan_result.urls[0].virustotal.message | default('N/A') }}</h3>
+                        <h3>
+                            Permalink: 
+                            {% if scan_result.urls[0].virustotal.permalink %}
+                                <a href="{{ scan_result.urls[0].virustotal.permalink }}">{{ scan_result.urls[0].virustotal.permalink }}</a>
+                            {% else %}
+                                N/A
+                            {% endif %}
+                        </h3>
                         <h3>Positives: {{ scan_result.urls[0].virustotal.positives | default('N/A') }}</h3>
                         <h3>Response code: {{ scan_result.urls[0].virustotal.response_code | default('N/A') }}</h3>
                         <h3>Scan date: {{ scan_result.urls[0].virustotal.scan_date | default('N/A') }}</h3>
@@ -107,6 +106,15 @@
                         <h3>IP address: {{ scan_result.urls[0].blacklist_checker.ip_address | default('N/A') }}</h3>
                         <h3>Detections: {{ scan_result.urls[0].blacklist_checker.detections | default('N/A') }}</h3>
                         <h3>Checks remaining: {{ scan_result.urls[0].blacklist_checker.checks_remaining | default('N/A') }}</h3>
+                    </div>
+
+                    <!-- Whois part -->
+                    <div class="card">
+                        <h2>WHOIS Info</h2>
+                        <h3>Domain name: {{ scan_result.urls[0].whois_data.domain_name | default('N/A') | any_to_str }}</h3>
+                        <h3>Creation date: {{ scan_result.urls[0].whois_data.creation_date | default('N/A') | any_to_str }}</h3>
+                        <h3>Expiration date: {{ scan_result.urls[0].whois_data.expiration_date | default('N/A') | any_to_str }}</h3>
+                        <h3>Updated date: {{ scan_result.urls[0].whois_data.updated_date | default('N/A') | any_to_str }}</h3>
                     </div>
                 {% endif %}
             </div>
