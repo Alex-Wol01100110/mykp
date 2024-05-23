@@ -2,7 +2,10 @@
 import sys
 import argparse
 
+from pydantic import ValidationError, AnyUrl
 from utils.general_utils import ModelUtils
+from utils.services_utils import perform_services_checks, render_services_checks
+from utils.custom_models import URLsSettings, URLSettings
 
 from settings import PROJECT_ROOT
 
@@ -71,16 +74,26 @@ class MainCLI:
         self.parser.add_argument(
             "-l",
             "--link",
-            help="Test link."
+            help="Test link. "
                  "Example: -l 'https://example.com' "
                  "Example: -l 'https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10'"
+        )
+        self.parser.add_argument(
+            "-a",
+            "--additional_checks",
+            default=False,
+            action=argparse.BooleanOptionalAction,
+            help="Test link with additional services. "
+                 "Can be used only with -l option. "
+                 "Example: -l -a 'https://example.com' "
+                 "Example: -l -a 'https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10'"
         )
         self.parser.add_argument(
             "-c",
             "--check",
             default=False,
             action=argparse.BooleanOptionalAction,
-            help="Check model accuracy."
+            help="Check model accuracy. "
                  "Example: python cli.py -c"
         )
         self.args = self.parser.parse_args()
@@ -108,7 +121,17 @@ class MainCLI:
                 update=True,
             )
         elif self.args.link:
-            ModelUtils.test_url(self.args.link, console=True)
+            try:
+                AnyUrl(url=self.args.link)
+            except ValidationError:
+                print("Invalid URL")
+            else:
+                ModelUtils.test_url(self.args.link, console=True)
+                if self.args.additional_checks:
+                    services_checks = perform_services_checks(
+                        URLsSettings(urls=(URLSettings(url=self.args.link),))
+                    )
+                    render_services_checks(services_checks)
         elif self.args.check:
             ModelUtils.check_model_accuracy()
         else:

@@ -61,6 +61,16 @@ def get_website_main_infos(url_models: URLsSettings):
             url.ip = get_domain_ip(url.domain)
 
 def perform_services_checks(url_models: URLsSettings) -> URLsSettings:
+    """
+    Summary:
+        Peform checks with additional services.
+
+    Args:
+        url_models (URLsSettings): set of the URL settings.
+
+    Returns:
+        URLsSettings: set of the URL settings.
+    """
     async_requester = AsyncRequester(url_models)
     async_requester.check_url_statuses()
     get_website_main_infos(url_models)
@@ -69,3 +79,30 @@ def perform_services_checks(url_models: URLsSettings) -> URLsSettings:
     async_requester.virustotal_check()
     async_requester.blacklist_checker_check()
     return url_models
+
+def render_services_checks(url_models: URLsSettings):
+    if url_models.urls[0].status_code != 404:
+        print("Website status: Active")
+    else:
+        print("Website status: Inactive")
+    print(f'URL Certificate: {url_models.urls[0].ssl_certificate}')
+    if url_models.urls[0].whois_data.valid_response:
+        print(f'Creation date: {url_models.urls[0].whois_data.creation_date}')
+        print(f'Expiration date: {url_models.urls[0].whois_data.expiration_date}')
+        print(f'Updated date: {url_models.urls[0].whois_data.updated_date}')
+    if url_models.urls[0].virustotal.valid_response:
+        print(f'VirusTotal message: {url_models.urls[0].virustotal.message}')
+        print(f'VirusTotal positives: {url_models.urls[0].virustotal.positives}')
+    if url_models.urls[0].blacklist_checker.valid_response:
+        print(
+            'Blacklist checker message '
+            f'{url_models.urls[0].blacklist_checker.message}'
+        )
+        print(
+            'Blacklist checker status '
+            f'{url_models.urls[0].blacklist_checker.status}'
+        )
+        print(
+            'Blacklist checker detections '
+            f'{url_models.urls[0].blacklist_checker.detections}'
+        )

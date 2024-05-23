@@ -79,8 +79,7 @@ class URLs(FastAPI):
     Summary:
         Provide list of endpoints.
     """
-
-    @app.post("/test_urls/")
+    @app.post("/test_urls/", tags=["Test URLs"], response_model=Dict[str, str])
     async def test_urls(
         urls: tuple[AnyUrl, ...],
         authenticated: str = Depends(validate_credentials)
@@ -88,16 +87,15 @@ class URLs(FastAPI):
         """
         Summary:
             Test URLs status - safe or malicious.
-
-        Args:
-            urls (str): provided urls.
-            authenticated (str, optional): Bool value,
-            that show if authentication is successful.
+        
+        Body:
+            list of valid urls.
 
         Returns:
-            Dict: key - url, value - status of url - safe or malicious..
+            Dict[str, str]: key - url,
+            value - status of url - Safe or Malicious.
         """
-        statuses = {True: "URL is Malicious", False: "URL is Safe"}
+        statuses = {True: "Malicious", False: "Safe"}
         if authenticated:
             checked_urls = {
                 str(url): statuses.get(ModelUtils.test_url(str(url)))

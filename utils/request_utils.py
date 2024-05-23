@@ -222,7 +222,7 @@ class AsyncRequester:
         except aiohttp.ClientError as e:
             print("Error:", e)
 
-    async def pefrom_blacklist_checker_request(
+    async def perform_blacklist_checker_request(
         self,
         session: aiohttp.ClientSession,
         url: URLSettings
@@ -235,7 +235,7 @@ class AsyncRequester:
             session (aiohttp.ClientSession): Object of interface
             url (URLSettings): Settings of the URL.
         """
-        if not url.ip and url.domain:
+        if not url.ip and not url.domain:
             return
         ip_or_domain = url.ip if url.ip else url.domain
         full_url = f"{settings.BLACKLIST_CHECKER_URL}{ip_or_domain}"
@@ -326,5 +326,5 @@ class AsyncRequester:
             Check IP address with BlackListChecker service.
         """
         asyncio.run(
-            self.gather_data(self.pefrom_blacklist_checker_request)
+            self.gather_data(self.perform_blacklist_checker_request)
         )

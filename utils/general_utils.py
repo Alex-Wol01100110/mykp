@@ -189,7 +189,9 @@ class ModelUtils:
         Returns:
             bool: True if url is malicious, False if url is safe.
         """
-        statuses = {True: "URL is Malicious", False: "URL is Safe"}
+        statuses = {
+            True: "URL is Malicious", False: "URL is Safe"
+        }
         classifier = ModelUtils.load_model(model_path)
         features_dict = NgramUtils().get_ngram_combinations()
         url_matrix = UrlUtils.process_url(url, features_dict)
@@ -265,10 +267,10 @@ class ModelUtils:
     def preprocess_dataset(
         dataframe: pd.DataFrame,
         features_dict: typing.Dict,
-    ) -> tuple:
+    ) -> typing.Generator[np.ndarray, np.ndarray, pd.DataFrame]:
         """
         Summary
-            Test trained model
+            Split dataframe to batches.
 
         Args:
             dataframe (pd.DataFrame): dataframe.
@@ -276,7 +278,7 @@ class ModelUtils:
             features_dict (typing.Dict): Ngrams. Key - ngram, value - number.
 
         Returns:
-            tuple: Amount of correct and incorrect predictions.
+            tuple: matrix, labels vector and batch.
         """
         rows_number = int(settings.ROWS_NUMBER)
         no_of_batches = int(dataframe.shape[0] / rows_number) + 1
