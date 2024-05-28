@@ -75,8 +75,8 @@ class MainCLI:
             "-l",
             "--link",
             help="Test link. "
-                 "Example: -l 'https://example.com' "
-                 "Example: -l 'https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10'"
+                 "Example: -l https://example.com "
+                 "Example: -l https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10"
         )
         self.parser.add_argument(
             "-a",
@@ -85,8 +85,8 @@ class MainCLI:
             action=argparse.BooleanOptionalAction,
             help="Test link with additional services. "
                  "Can be used only with -l option. "
-                 "Example: -l -a 'https://example.com' "
-                 "Example: -l -a 'https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10'"
+                 "Example: -l https://example.com -a"
+                 "Example: -l https://example.com/products.php?linkcomplet=iphone-6-plus-apple-64gb-cinza-espacial-tele-5-5-retin-4g-camera-8mp-frontal-ios-10-proc.-m8/p/2116558/te/ipho/&amp;id=10 -a"
         )
         self.parser.add_argument(
             "-c",
