@@ -1,19 +1,18 @@
 """Module providing a functions to train and use trained model."""
-import json
 import itertools
+import json
 import os
-import sys
 import re
+import sys
 import typing
 
 import joblib
-from loguru import logger
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import SGDClassifier
-
 import nltk
 import numpy as np
 import pandas as pd
+from loguru import logger
+from sklearn.linear_model import SGDClassifier
+from sklearn.model_selection import train_test_split
 
 import settings
 
@@ -117,7 +116,12 @@ class ModelUtils:
     """
     @staticmethod
     @logger.catch
-    def train_model(update: bool = False):
+    def train_model(
+        loss: str,
+        penalty: str,
+        max_iter: int,
+        update: bool = False,
+    ):
         """
         Summary:
             Full training process.
@@ -129,7 +133,11 @@ class ModelUtils:
         if update:
             classifier = ModelUtils.load_model()
         else:
-            classifier = SGDClassifier()
+            classifier = SGDClassifier(
+                loss=loss,
+                penalty=penalty,
+                max_iter=max_iter
+            )
         train_df, test_df = ModelUtils.split_dataframe()
         features_dict = NgramUtils().get_ngram_combinations()
         ModelUtils.insert_data(train_df, classifier, features_dict)
@@ -139,6 +147,10 @@ class ModelUtils:
             classifier,
             features_dict
         )
+        if update:
+            print("Model have been updated!")
+        else:
+            print("Model have been trained!")
         print("Correct Predictions ", correct)
         print("Incorrect Predictions ", incorrect)
         accuracy = (correct / test_df.shape[0]) * 100
@@ -177,7 +189,9 @@ class ModelUtils:
         Returns:
             bool: True if url is malicious, False if url is safe.
         """
-        statuses = {True: "URL is Malicious", False: "URL is Safe"}
+        statuses = {
+            True: "URL is Malicious", False: "URL is Safe"
+        }
         classifier = ModelUtils.load_model(model_path)
         features_dict = NgramUtils().get_ngram_combinations()
         url_matrix = UrlUtils.process_url(url, features_dict)
@@ -253,10 +267,10 @@ class ModelUtils:
     def preprocess_dataset(
         dataframe: pd.DataFrame,
         features_dict: typing.Dict,
-    ) -> tuple:
+    ) -> typing.Generator[np.ndarray, np.ndarray, pd.DataFrame]:
         """
         Summary
-            Test trained model
+            Split dataframe to batches.
 
         Args:
             dataframe (pd.DataFrame): dataframe.
@@ -264,7 +278,7 @@ class ModelUtils:
             features_dict (typing.Dict): Ngrams. Key - ngram, value - number.
 
         Returns:
-            tuple: Amount of correct and incorrect predictions.
+            tuple: matrix, labels vector and batch.
         """
         rows_number = int(settings.ROWS_NUMBER)
         no_of_batches = int(dataframe.shape[0] / rows_number) + 1
@@ -418,7 +432,7 @@ class UrlUtils:
         batch: pd.DataFrame,
         x: np.ndarray,
         y: np.ndarray
-    ) -> typing.Tuple:
+    ) -> typing.Tuple[np.ndarray, np.ndarray]:
         """
         Summary:
             Apply vectorization process to current batch.
@@ -457,7 +471,7 @@ class UrlUtils:
         Returns:
             np.ndarray: matrix.
         """
-        x = np.zeros([1, len(features_dict)],dtype="int")
+        x = np.zeros([1, len(features_dict)], dtype="int")
         url = UrlUtils.clean_url(url)
         for gram in NgramUtils.generate_ngrams_from_string(url):
             try:

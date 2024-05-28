@@ -30,6 +30,16 @@ SERVICE_PORT = os.getenv("SERVICE_PORT")
 # URL address
 WEBSITE_ADDRESS= os.getenv("WEBSITE_ADDRESS")
 
+# Services:
+# VirustTotal
+VIRUS_TOTAL_REPORT_URL = os.getenv("VIRUS_TOTAL_REPORT_URL")
+VIRUS_TOTAL_SCAN_URL = os.getenv("VIRUS_TOTAL_SCAN_URL")
+VIRUS_TOTAL_API_KEY = os.getenv("VIRUS_TOTAL_API_KEY")
+
+# api blacklist checker - (can check: email, domain or IP address)
+BLACKLIST_CHECKER_API_KEY = os.getenv("BLACKLIST_CHECKER_API_KEY")
+BLACKLIST_CHECKER_URL = os.getenv("BLACKLIST_CHECKER_URL")
+
 logger.add(
     sink=os.path.join("debug_logs", "warning.log"),
     level="WARNING",

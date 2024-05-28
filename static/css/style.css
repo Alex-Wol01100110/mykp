@@ -27,8 +27,14 @@ ul {
 
 a {
   text-decoration: none;
-  color: #333;
+  color: #000000;
 }
+
+.card a:hover {
+  color: var(--primary-color);
+  text-decoration: underline;
+}
+
 h1,
 h2 {
   font-weight: 300;
@@ -107,7 +113,7 @@ img {
 }
 
 .showcase-form .form-control {
-  margin: 30px 0;
+  margin: 15px 0;
 }
 
 .showcase-form input[type='text'],
@@ -131,10 +137,10 @@ img {
   right: 0;
   left: 0;
   background: #fff;
-  transform: skewY(5deg);
-  -webkit-transform: skewY(5deg);
-  -moz-transform: skewY(5deg);
-  -ms-transform: skewY(5deg);
+  transform: skewY(2deg);
+  -webkit-transform: skewY(2deg);
+  -moz-transform: skewY(2deg);
+  -ms-transform: skewY(2deg);
 }
 .showcase::after {
   content: '';
@@ -144,24 +150,70 @@ img {
   right: 0;
   left: 0;
   background: #fff;
-  transform: skewY(355deg);
-  -webkit-transform: skewY(355deg);
-  -moz-transform: skewY(355deg);
-  -ms-transform: skewY(355deg);
+  transform: skewY(358  deg);
+  -webkit-transform: skewY(358deg);
+  -moz-transform: skewY(358deg);
+  -ms-transform: skewY(358deg);
 }
 
-#url-status {
+#url-error {
   margin: 0;
   font-weight: bold;
   width: fit-content;
 }
 
-.url-malicious {
+.url-invalid {
   color: #FF0000;
 }
 
 .url-safe {
   color: #33875a;
+}
+
+/* Scan info */
+.scan-info-separator {
+  padding-top: 115px;
+}
+
+.scan-info-footer {
+  height: 50px;
+  width: 100%;
+  background-color: var(--primary-color);
+}
+
+.hidden {
+  max-height: 0;
+  padding: 0;
+  margin-bottom: 0px;
+}
+
+#scan-list {
+  transition: max-height 0.3s ease-in-out, padding 0.3s ease-in-out;
+}
+
+.scan-info-button {
+  width: 100%;
+  margin-bottom: 20px;
+  display: inline-block;
+  padding: 15px 25px;
+  font-size: 24px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: var(--primary-color);
+  border: none;
+  border-radius: 0px;
+  box-shadow: 0 10px 10px #999;;
+}
+
+.scan-info-button:hover {background-color: #3eb073}
+
+.scan-info-button:active {
+  background-color: #33875a;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
 /* Intro */
