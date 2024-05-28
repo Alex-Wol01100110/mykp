@@ -87,9 +87,18 @@ def render_services_checks(url_models: URLsSettings):
         print("Website status: Inactive")
     print(f'URL Certificate: {url_models.urls[0].ssl_certificate}')
     if url_models.urls[0].whois_data.valid_response:
-        print(f'Creation date: {url_models.urls[0].whois_data.creation_date}')
-        print(f'Expiration date: {url_models.urls[0].whois_data.expiration_date}')
-        print(f'Updated date: {url_models.urls[0].whois_data.updated_date}')
+        if isinstance(url_models.urls[0].whois_data.creation_date, tuple):
+            print(f'Creation date: {url_models.urls[0].whois_data.creation_date[0]}')
+        else:
+            print(f'Creation date: {url_models.urls[0].whois_data.creation_date}')
+        if isinstance(url_models.urls[0].whois_data.expiration_date, tuple):
+            print(f'Expiration date: {url_models.urls[0].whois_data.expiration_date[0]}')
+        else:
+            print(f'Expiration date: {url_models.urls[0].whois_data.expiration_date}')
+        if isinstance(url_models.urls[0].whois_data.updated_date, tuple):
+            print(f'Updated date: {url_models.urls[0].whois_data.updated_date[0]}')
+        else:
+            print(f'Updated date: {url_models.urls[0].whois_data.updated_date}')
     if url_models.urls[0].virustotal.valid_response:
         print(f'VirusTotal message: {url_models.urls[0].virustotal.message}')
         print(f'VirusTotal positives: {url_models.urls[0].virustotal.positives}')
